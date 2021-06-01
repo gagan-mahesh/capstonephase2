@@ -5,6 +5,9 @@ import settings
 from sqlalchemy.exc import ProgrammingError
 import json
 #import emoji
+import sys
+import re
+import urllib
 
 #db = dataset.connect("sqlite:///tweets.db")
 db = dataset.connect(settings.CONNECTION_STRING)
@@ -26,21 +29,47 @@ def get_tweets(username):
   
         # 200 tweets to be extracted
         number_of_tweets=200
-        tweets = api.user_timeline(screen_name=username)
+        tweets = api.user_timeline(screen_name=username, tweet_mode="extended")
   
+        # Extract the urls from the tweets (top 10 for now)
+        urllist = []
+        flag = False
+        c = 0
+        for tweet in tweets:
+            print("waiting....")
+            print("count of tweets extracted = ", c)
+            c += 1
+            if c == 10:
+                break
+            urls = re.findall("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", tweet.full_text)
+            for url in urls:
+                try:
+                    opener = urllib.request.build_opener()
+                    request = urllib.request.Request(url)
+                    response = opener.open(request)
+                    actual_url = response.geturl()
+                    urllist.append(actual_url)
+                except:
+                    pass 
+                    # print(url)
+        print(urllist)
+
+        
+"""
         # Empty Array
         tmp=[] 
   
         # create array of tweet information: username, 
         # tweet id, date/time, text
-        tweets_for_csv = [tweet.text for tweet in tweets] # CSV file created 
+        tweets_for_csv = [tweet.full_text for tweet in tweets] # CSV file created 
         for j in tweets_for_csv:
-  
+            
             # Appending tweets to the empty array tmp
             tmp.append(j) 
   
-        # Printing the tweets
-        print(tmp)
+        # # Printing the tweets
+        print(tmp,end="\n")
+"""
 """
 class TwitterStreamListener(tweepy.streaming.StreamListener):
     ''' Handles data received from the stream. '''

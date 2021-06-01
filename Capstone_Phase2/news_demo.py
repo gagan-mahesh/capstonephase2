@@ -137,7 +137,12 @@ article.download()
 article.parse()
  
 
-res = "".join([s for s in article.text.strip().splitlines(True) if s.strip("\r\n").strip()])
+# res = "".join([s for s in article.text.strip().splitlines(True) if s.strip("\r\n").strip()])
+res = ""
+content = article.text
+content = content.split("\n")
+for line in content:
+    res += line.strip()+"."
 # print(res)
 # res=""
 # with article.text as fp:
