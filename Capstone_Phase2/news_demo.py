@@ -11,14 +11,14 @@ import pandas as pd
 import re
 import numpy as np
 from newspaper import Article
-
+from tweepySample import *
 
 
 # In[2]:
 
 
-tokenizer = T5Tokenizer.from_pretrained('./AbstractiveSummarisationmodel/summarisation_tokeniser')
-model = TFT5ForConditionalGeneration.from_pretrained('./AbstractiveSummarisationmodel/summarisation_model')
+tokenizer = T5Tokenizer.from_pretrained('./Abstractive Summarisation model/summarisation_tokeniser')
+model = TFT5ForConditionalGeneration.from_pretrained('./Abstractive Summarisation model/summarisation_model')
 
 
 # In[3]:
@@ -129,29 +129,38 @@ Tesla did not respond to multiple requests for comment, and generally does not e
 # In[ ]:
 
 
- 
-url = "https://edition.cnn.com/2021/05/10/politics/colonial-ransomware-attack-explainer/index.html" 
-# download and parse article
-article = Article(url)
-article.download()
-article.parse()
- 
+def get_article(url):
+    #url = "https://edition.cnn.com/2021/05/10/politics/colonial-ransomware-attack-explainer/index.html" 
+    # download and parse article
+    article = Article(url)
+    article.download()
+    article.parse()
+     
 
-# res = "".join([s for s in article.text.strip().splitlines(True) if s.strip("\r\n").strip()])
-res = ""
-content = article.text
-content = content.split("\n")
-for line in content:
-    res += line.strip()+"."
-# print(res)
-# res=""
-# with article.text as fp:
-#    line = fp.readline()
-#    cnt = 1
-#    while line:
-#        res+=line+"."
-#        #print("Line {}: {}".format(cnt, line.strip()))
-#        line = fp.readline()
-#        cnt += 1
-print(returnSummary(res))
-
+    # res = "".join([s for s in article.text.strip().splitlines(True) if s.strip("\r\n").strip()])
+    res = ""
+    content = article.text
+    content = content.split("\n")
+    for line in content:
+        res += line.strip()+"."
+    return res
+    # print(res)
+    # res=""
+    # with article.text as fp:
+    #    line = fp.readline()
+    #    cnt = 1
+    #    while line:
+    #        res+=line+"."
+    #        #print("Line {}: {}".format(cnt, line.strip()))
+    #        line = fp.readline()
+    #        cnt += 1
+def get_summary():
+    global res
+    list_of_articles = get_tweets("CNN")
+    list_of_summary = []
+    for i in list_of_articles:
+        article = get_article(i)
+        summary = returnSummary(article)
+        list_of_summary.append(summary)
+    #print(summary)
+    return list_of_summary

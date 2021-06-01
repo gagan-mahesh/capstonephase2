@@ -37,7 +37,7 @@ def get_tweets(username):
         c = 0
         for tweet in tweets:
             print("waiting....")
-            print("count of tweets extracted = ", c)
+            print("count of tweets extracted = ", c+1)
             c += 1
             if c == 10:
                 break
@@ -52,7 +52,8 @@ def get_tweets(username):
                 except:
                     pass 
                     # print(url)
-        print(urllist)
+        #print(urllist)
+        return urllist
 
         
 """
@@ -147,4 +148,4 @@ auth.set_access_token(accessToken, accessTokenSecret)
 stream = tweepy.streaming.Stream(auth, listener)
 stream.filter(track=settings.TRACK_TERMS, languages=["en"])
 """
-get_tweets("CNN")
+#get_tweets("CNN")
