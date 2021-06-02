@@ -1,8 +1,8 @@
 import tweepy
-from textblob import TextBlob
+# from textblob import TextBlob
 import dataset 
 import settings
-from sqlalchemy.exc import ProgrammingError
+# from sqlalchemy.exc import ProgrammingError
 import json
 #import emoji
 import sys
@@ -39,7 +39,7 @@ def get_tweets(username):
             print("waiting....")
             print("count of tweets extracted = ", c)
             c += 1
-            if c > 5:
+            if c > 2:
                 break
             urls = re.findall("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", tweet.full_text)
             for url in urls:
