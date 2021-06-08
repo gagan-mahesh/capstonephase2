@@ -34,12 +34,12 @@ def get_tweets(username):
         # Extract the urls from the tweets (top 10 for now)
         urllist = []
         flag = False
-        c = 1
+        c = 0
         for tweet in tweets:
             print("waiting....")
             print("count of tweets extracted = ", c)
             c += 1
-            if c > 2:
+            if c > 1:
                 break
             urls = re.findall("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", tweet.full_text)
             for url in urls:
@@ -54,4 +54,6 @@ def get_tweets(username):
                     # print(url)
         #print(urllist)
         return urllist
+
+
 
