@@ -91,8 +91,6 @@ def get_summary():
     #print(summary)
     return list_of_summary
 
-def temp():
-    list_of_articles = get_tweets("CNN")
-    return list_of_articles
+
 
 # %%
