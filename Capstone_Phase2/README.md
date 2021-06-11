@@ -37,5 +37,5 @@ Created Dockerfile
 #### Terminal3
 3. python app.py
 #### Browser
-4. localhost:8000/summary [This currently only extracts hyperlinks]
+4. localhost:8000/summary?count=3 [this extracts top 3 tweets...] 
 5. Open another tab and localhost:8000/results [Keep refreshing this page to see top 5 tweets being displayed as and when job is processed from the redis queue]

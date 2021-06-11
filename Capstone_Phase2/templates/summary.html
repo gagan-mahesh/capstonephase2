@@ -1,7 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
 	{%for summary in summaries%}
-		<h3>{{summary.title}}</h3>
-		<p>{{summary.content}}</p>
+	<article class="media content-section">
+	  <div class="media-body">
+	    <h2><a class="article-title" href="#">{{ summary.title }}</a></h2>
+	    <p class="article-content">{{ summary.content }}</p>
+	  </div>
+	</article>
 	{% endfor %}
 {% endblock%}
