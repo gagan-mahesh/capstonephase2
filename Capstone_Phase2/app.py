@@ -18,14 +18,15 @@ app = Flask(__name__)
 '''
 Note: this function name has to be changed later to an appropriate name!
 '''
-def hyperlinks_util(link):
+def summary_util(link):
 	'''
 	Later The returnsummary() should be called by passing link as argument
 	and then, instead of writing link to csv file...the summarised text
 	should be written!!
 	'''
+	summ = returnSummary(link)
 	with open('sample.csv', mode='a') as file_:
-		file_.write("{}".format(link))
+		file_.write("{}".format(summ))
 		file_.write("\n")  # Next line.
 	time.sleep(2)
 	return 1
@@ -70,30 +71,34 @@ def summarized_output():
 	NOTE: CURRENTLY THIS API CALL IS ONLY DISPLAYING HYPERLINKS.
 	THIS WILL BE CHANGED LATER...
 '''
-@app.route("/summary")
+@app.route("/summary", methods=['GET'])
 def summary():
 	links = None 
 	jobs = None
 	# check if currently there are no jobs running in the queue.
-	if q.started_job_registry.count == 0:
-		# first clear all data in the csv file
-		fileVariable = open('sample.csv', 'r+')
-		fileVariable.truncate(0)
-		fileVariable.close()
+	try:
+		if q.started_job_registry.count == 0:
+			# first clear all data in the csv file
+			fileVariable = open('sample.csv', 'r+')
+			fileVariable.truncate(0)
+			fileVariable.close()
 
-		links = getTweetsFromUser("CNN", 5)
-		for link in links:
-			jobs = add_task(link)
-			print("jobs = ", jobs)
-	return render_template('summary.html', jobs=jobs)
+			count = int(request.args.get('count'))
+			links = getTweetsFromUser("CNN", count)
+			for link in links:
+				jobs = add_task(link)
+				print("jobs = ", jobs)
+		return "Summarising....", 202
+	except Exception as e:
+		return "Something went wrong, try again in a while! ", 500
 
 # utility function..
 def add_task(link):
-	from app import hyperlinks_util
+	from app import summary_util
 
 	jobs = q.jobs
 	if link:
-		job = q.enqueue(hyperlinks_util, link)
+		job = q.enqueue(summary_util, link)
 		jobs = q.jobs
 	return jobs
 
@@ -110,14 +115,23 @@ def final(jobkey):
 @app.route("/result")
 def result():
 	import csv
-	links = []
+	summaries = []
 	with open('sample.csv', 'r') as file:
 		reader = csv.reader(file)
 		for row in reader:
-			links.append(row)
-	if links == []:
-		return "nan", 202
-	return jsonify(links=links), 200
+			summaries.append(row[0])
+	summarized_output = []
+	if summaries == []:
+		# return "nan", 202
+		return render_template('summary.html',summaries=summarized_output), 200
+	d = {}	# dictionary to store in json format and passing to the html page...
+	for i in summaries:
+		d["title"] = "Short heading if possible for every news summary"
+		d["content"] = i
+		summarized_output.append(d)
+		d = {}
+	# return jsonify(summaries=summarized_output), 200
+	return render_template('summary.html',summaries=summarized_output), 200
 
 if __name__=="__main__":
 	app.config['TEMPLATES_AUTO_RELOAD'] = True
