@@ -4,7 +4,7 @@ sys.path.insert(1, '../')
 from flask import Flask, render_template, redirect, url_for, jsonify, request
 from Capstone_Phase2.news_demo import *
 from Capstone_Phase2.tweepySample import getTweetsFromUser
-
+from Capstone_Phase2.emotion import *
 from rq import Queue
 from rq.job import Job
 from worker import conn
@@ -66,11 +66,11 @@ def summarized_output():
 		summary_json = {}
 	return render_template('summary.html',summaries=summarized_output)
 
-# call this api for summarising text
-'''
-	NOTE: CURRENTLY THIS API CALL IS ONLY DISPLAYING HYPERLINKS.
-	THIS WILL BE CHANGED LATER...
-'''
+# # call this api for summarising text
+# '''
+# 	NOTE: CURRENTLY THIS API CALL IS ONLY DISPLAYING HYPERLINKS.
+# 	THIS WILL BE CHANGED LATER...
+# '''
 @app.route("/summary", methods=['GET'])
 def summary():
 	links = None 
@@ -111,7 +111,7 @@ def final(jobkey):
 		return str(job.result), 200
 	return 'nay', 202
 
-# use this api call to see links/summaries display
+# # use this api call to see links/summaries display
 @app.route("/result")
 def result():
 	import csv
@@ -133,6 +133,25 @@ def result():
 	# return jsonify(summaries=summarized_output), 200
 	return render_template('summary.html',summaries=summarized_output), 200
 
+
+#emotion detection 
+@app.route('/emotion',methods=['GET'])
+def emotion_detection():
+	summary="""'migrant is body hanging out of plane on runway of casablanca is mohammed v airport . authorities believe it is most likely that the man died during take off in conakry .
+	 passengers said they were shocked to find out what happened during the flight . sadly, this is not the first time a stowaway has made their way onto a plane . earlier this year,
+	the body of a suspected plane landed just three feet away from a sunbathing resident in clapham . the sunbather is in his 20s and is still waiting for it . it is believed to have 
+	fallen from the plane on the runway in morocco . one of the passengers said: i am very sad for him and his family . police have released horrifying footage shows the unidentified 
+	man was killed during take-off in london after trying to leave the'"""
+	emotions = getEmotion(summary)
+	different_emotions = {}
+	all_emotions = [] 
+	for emotion in emotions:
+		if emotion not in different_emotions:
+			different_emotions['title'] = emotion
+			different_emotions['content'] = emotions[emotion]
+		all_emotions.append(different_emotions)
+		different_emotions = {}
+	return render_template('summary.html',summaries = all_emotions), 200
 if __name__=="__main__":
 	app.config['TEMPLATES_AUTO_RELOAD'] = True
 	app.run(host='0.0.0.0', port=8000, debug=True)
