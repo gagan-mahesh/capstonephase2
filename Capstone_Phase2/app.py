@@ -43,7 +43,7 @@ def getTweets(username, count):
 	print("tweets extracted are ", tweets, count)
 	return jsonify(tweets=tweets), 200
 
-# for this api call.... have to pass url as /get_summary?link=[replace with some HyperLink]
+# # for this api call.... have to pass url as /get_summary?link=[replace with some HyperLink]
 @app.route("/get_summary", methods=['GET'])
 def summarise_link():
 	args = request.args
@@ -54,17 +54,28 @@ def summarise_link():
 	else:
 		return "Error in summarising link...try again later.", 500
 
+# temp = [{
+# 		'title' : "Jello world",
+# 		'content': "Hello world",
+# 		},
+# 		{
+# 		'title' : "kello world",
+# 		'content' :"mello world",
+# 		}
+# 		]
+
 @app.route("/summary_all")
 def summarized_output():
 	summary = get_summary()
+	#summary = temp.copy()
 	summary_json = {}
 	summarized_output = []
-	for i in summary.result:
+	for i in summary:
 		summary_json["title"] = "Short heading if possible for every news summary"
 		summary_json["content"] = i
 		summarized_output.append(summary_json)
 		summary_json = {}
-	return render_template('summary.html',summaries=summarized_output)
+	return render_template('summary.html',summaries=summary)
 
 # # call this api for summarising text
 # '''
@@ -92,7 +103,7 @@ def summary():
 	except Exception as e:
 		return "Something went wrong, try again in a while! ", 500
 
-# utility function..
+# # utility function..
 def add_task(link):
 	from app import summary_util
 
@@ -102,8 +113,8 @@ def add_task(link):
 		jobs = q.jobs
 	return jobs
 
-# this api call is used to check if a job has been completed....
-# this api call is only for debugging purposes
+# # this api call is used to check if a job has been completed....
+# # this api call is only for debugging purposes
 @app.route("/final/<jobkey>")
 def final(jobkey):
 	job = Job.fetch(jobkey, connection=conn)
@@ -111,7 +122,7 @@ def final(jobkey):
 		return str(job.result), 200
 	return 'nay', 202
 
-# # use this api call to see links/summaries display
+# # # use this api call to see links/summaries display
 @app.route("/result")
 def result():
 	import csv
@@ -135,13 +146,9 @@ def result():
 
 
 #emotion detection 
-@app.route('/emotion',methods=['GET'])
+@app.route('/emotion',methods=['POST','GET'])
 def emotion_detection():
-	summary="""'migrant is body hanging out of plane on runway of casablanca is mohammed v airport . authorities believe it is most likely that the man died during take off in conakry .
-	 passengers said they were shocked to find out what happened during the flight . sadly, this is not the first time a stowaway has made their way onto a plane . earlier this year,
-	the body of a suspected plane landed just three feet away from a sunbathing resident in clapham . the sunbather is in his 20s and is still waiting for it . it is believed to have 
-	fallen from the plane on the runway in morocco . one of the passengers said: i am very sad for him and his family . police have released horrifying footage shows the unidentified 
-	man was killed during take-off in london after trying to leave the'"""
+	summary = request.get_json()
 	emotions = getEmotion(summary)
 	different_emotions = {}
 	all_emotions = [] 
@@ -151,7 +158,8 @@ def emotion_detection():
 			different_emotions['content'] = emotions[emotion]
 		all_emotions.append(different_emotions)
 		different_emotions = {}
-	return render_template('summary.html',summaries = all_emotions), 200
+	return render_template('emotion.html',summaries = all_emotions), 200
+
 if __name__=="__main__":
 	app.config['TEMPLATES_AUTO_RELOAD'] = True
 	app.run(host='0.0.0.0', port=8000, debug=True)

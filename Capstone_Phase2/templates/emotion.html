@@ -3,8 +3,8 @@
 	{%for summary in summaries%}
 	<article class="media content-section">
 	  <div class="media-body">
-	    <h2>{{ summary.title }}</h2>
-	    <p class="article-content"><a class="article-title" href="emotion" onclick="send_data(`{{summary.content}}`)">{{ summary.content }}</a></p>
+	    <h2>{{summary.title}}</h2>
+	    <p class="article-content">{{summary.content}}</p>
 	  </div>
 	</article>
 	{% endfor %}
