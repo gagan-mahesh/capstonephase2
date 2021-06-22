@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block content %}
+	<div class = "content-section">
+		<form method = "POST" action="/summary_all" >
+			<fieldset class="form-group">
+				<legend class="border-bottom mb-4">Enter the username and required number of news</legend>
+				<div class="form-group">
+					<label for="username" class="form-control-label"></label>
+					<input type="text" name="username" placeholder="username" class="form-control form-control-lg">
+				</div>
+				<div class="form-group">
+					<label for="Number of tweets" class="form-control-label"></label>
+					<input type="text" name="Number of tweets" placeholder="Number of Tweets" class="form-control form-control-lg">
+				</div>
+			</fieldset>
+			<div class="form-group">
+				<button class="btn btn-outline-info">Submit</button>
+			</div>
+		</form>
+	</div>
+{% endblock%}

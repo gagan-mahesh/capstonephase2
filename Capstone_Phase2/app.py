@@ -5,6 +5,7 @@ from flask import Flask, render_template, redirect, url_for, jsonify, request
 from Capstone_Phase2.news_demo import *
 from Capstone_Phase2.tweepySample import getTweetsFromUser
 from Capstone_Phase2.emotion import *
+from Capstone_Phase2.forms import *
 from rq import Queue
 from rq.job import Job
 from worker import conn
@@ -33,17 +34,17 @@ def summary_util(link):
 
 @app.route("/")
 def hello():
-	return "<h1>Front Page with product title</h1>"
+	return render_template('frontpage.html')
 
 # get tweets based on username/twitter account and also how many tweets
-# is required, should also be specified.
+# # is required, should also be specified.
 @app.route("/get_tweets/<username>/<int:count>", methods=['GET'])
 def getTweets(username, count):
 	tweets = getTweetsFromUser(username, count)
 	print("tweets extracted are ", tweets, count)
 	return jsonify(tweets=tweets), 200
 
-# # for this api call.... have to pass url as /get_summary?link=[replace with some HyperLink]
+# # # for this api call.... have to pass url as /get_summary?link=[replace with some HyperLink]
 @app.route("/get_summary", methods=['GET'])
 def summarise_link():
 	args = request.args
@@ -54,20 +55,20 @@ def summarise_link():
 	else:
 		return "Error in summarising link...try again later.", 500
 
-# temp = [{
-# 		'title' : "Jello world",
-# 		'content': "Hello world",
-# 		},
-# 		{
-# 		'title' : "kello world",
-# 		'content' :"mello world",
-# 		}
-# 		]
+temp = [{
+		'title' : "Jello world",
+		'content': "Hello world",
+		},
+		{
+		'title' : "kello world",
+		'content' :"mello world",
+		}
+		]
 
-@app.route("/summary_all")
+@app.route("/summary_all",methods=['GET','POST'])
 def summarized_output():
 	summary = get_summary()
-	#summary = temp.copy()
+	summary = temp.copy()
 	summary_json = {}
 	summarized_output = []
 	for i in summary:
@@ -75,13 +76,12 @@ def summarized_output():
 		summary_json["content"] = i
 		summarized_output.append(summary_json)
 		summary_json = {}
-	return render_template('summary.html',summaries=summary)
-
+	return render_template('summary.html',summaries=summarized_output
 # # call this api for summarising text
 # '''
 # 	NOTE: CURRENTLY THIS API CALL IS ONLY DISPLAYING HYPERLINKS.
 # 	THIS WILL BE CHANGED LATER...
-# '''
+# # '''
 @app.route("/summary", methods=['GET'])
 def summary():
 	links = None 
@@ -103,7 +103,7 @@ def summary():
 	except Exception as e:
 		return "Something went wrong, try again in a while! ", 500
 
-# # utility function..
+# # # utility function..
 def add_task(link):
 	from app import summary_util
 
@@ -113,8 +113,8 @@ def add_task(link):
 		jobs = q.jobs
 	return jobs
 
-# # this api call is used to check if a job has been completed....
-# # this api call is only for debugging purposes
+# # # this api call is used to check if a job has been completed....
+# # # this api call is only for debugging purposes
 @app.route("/final/<jobkey>")
 def final(jobkey):
 	job = Job.fetch(jobkey, connection=conn)
@@ -122,7 +122,7 @@ def final(jobkey):
 		return str(job.result), 200
 	return 'nay', 202
 
-# # # use this api call to see links/summaries display
+# # # # use this api call to see links/summaries display
 @app.route("/result")
 def result():
 	import csv
@@ -145,7 +145,7 @@ def result():
 	return render_template('summary.html',summaries=summarized_output), 200
 
 
-#emotion detection 
+# #emotion detection 
 @app.route('/emotion',methods=['POST','GET'])
 def emotion_detection():
 	summary = request.get_json()
@@ -159,6 +159,11 @@ def emotion_detection():
 		all_emotions.append(different_emotions)
 		different_emotions = {}
 	return render_template('emotion.html',summaries = all_emotions), 200
+
+@app.route('/input',methods=['POST','GET'])
+def input_form():
+	return render_template('input_form.html')
+
 
 if __name__=="__main__":
 	app.config['TEMPLATES_AUTO_RELOAD'] = True
