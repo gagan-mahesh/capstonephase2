@@ -60,7 +60,7 @@ def summarize(article):
 
 
 def returnSummary(article):
-    result =decontracted(article)
+    result = decontracted(article)
     return summarize(cleanText(result))
 
 
@@ -78,6 +78,7 @@ def get_article(url):
     content = content.split("\n")
     for line in content:
         res += line.strip()+"."
+    #res = function(link,username)
     return res
 
 def get_summary():
