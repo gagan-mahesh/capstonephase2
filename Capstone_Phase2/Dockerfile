@@ -1,6 +1,11 @@
 FROM python:3
-WORKDIR /deploy/
-COPY . /deploy/
+RUN mkdir /myfolder
+WORKDIR /myfolder
+COPY ./requirements.txt /myfolder/
 RUN pip install -r requirements.txt
-EXPOSE 80
-ENTRYPOINT ["python", "app.py"]
+COPY . /myfolder/
+COPY ./app.py /myfolder/
+# RUN pip install -r requirements.txt
+EXPOSE 8000
+# ENTRYPOINT ["python", "app.py"]
+CMD [ "python", "app.py" ]

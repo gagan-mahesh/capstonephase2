@@ -2,12 +2,15 @@ import sys, time
 import json
 sys.path.insert(1, '../')
 from flask import Flask, render_template, redirect, url_for, jsonify, request
-from Capstone_Phase2.news_demo import *
-from Capstone_Phase2.tweepySample import getTweetsFromUser
+# from Capstone_Phase2.news_demo import *
+# from Capstone_Phase2.tweepySample import getTweetsFromUser
+from news_demo import * 
+from tweepySample import getTweetsFromUser 
 
 from rq import Queue
 from rq.job import Job
 from worker import conn
+
 
 q = Queue(connection=conn)
 links_global = []
@@ -90,7 +93,7 @@ def summary():
 				print("jobs = ", jobs)
 		return "Summarising....", 202
 	except Exception as e:
-		return "Something went wrong, try again in a while! ", 500
+		return "Something went wrong, try again in a while! " + str(e), 500
 
 # utility function..
 def add_task(link):
