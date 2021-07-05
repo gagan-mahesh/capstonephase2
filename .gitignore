@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 
 Capstone_Phase2/Abstractive Summarisation model/
+Capstone_Phase2/emotion_model/
+Capstone_Phase2/emotion_tokeniser/

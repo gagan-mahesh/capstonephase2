@@ -3,7 +3,13 @@
 	{%for summary in summaries%}
 	<article class="media content-section">
 	  <div class="media-body">
-	    <p class="article-content"><a class="article-title" href="emotion" onclick="send_data(`{{summary.content}}`)">{{ summary.content }}</a></p>
+	    <p class="article-content">
+			{{summary.content}}
+			<form action="/emotion" method='POST'>
+				<input type="text" name="temp" value="`{{summary.content}}`" hidden />
+				<button type="submit">submit</button>
+			</form>
+		</p>
 	  </div>
 	</article>
 	{% endfor %}

@@ -6,6 +6,8 @@ import re
 import numpy as np
 from newspaper import Article
 from tweepySample import *
+from bs4 import BeautifulSoup as soup
+import requests
 
 tokenizer = T5Tokenizer.from_pretrained('./Abstractive Summarisation model/summarisation_tokeniser')
 model = TFT5ForConditionalGeneration.from_pretrained('./Abstractive Summarisation model/summarisation_model')
@@ -65,28 +67,48 @@ def returnSummary(article):
 
 
 
-def get_article(url):
-    #url = "https://edition.cnn.com/2021/05/10/politics/colonial-ransomware-attack-explainer/index.html" 
-    # download and parse article
-    article = Article(url)
-    article.download()
-    article.parse()
+# def get_article(url):
+#     #url = "https://edition.cnn.com/2021/05/10/politics/colonial-ransomware-attack-explainer/index.html" 
+#     # download and parse article
+#     article = Article(url)
+#     article.download()
+#     article.parse()
     
-    #removing new line and making the input into proper format
-    res = ""
-    content = article.text
-    content = content.split("\n")
-    for line in content:
-        res += line.strip()+"."
-    #res = function(link,username)
-    return res
+#     #removing new line and making the input into proper format
+#     res = ""
+#     content = article.text
+#     content = content.split("\n")
+#     for line in content:
+#         res += line.strip()+"."
+#     #res = function(link,username)
+#     return res
+
+def get_article(url,news_corp):
+#     cnn_url="https://www.bbc.com/news/world-asia-india-57551285"
+    class_name=None
+    if news_corp=='BBC':
+        class_name="ssrcss-uf6wea-RichTextComponentWrapper e1xue1i84"
+    elif news_corp=='CNN':
+        class_name="zn-body__paragraph"
+    else:
+        class_name="fewcent-83940965"
+    html = requests.get(url)
+    bsobj = soup(html.content,'lxml')
+    article=""
+    for news in bsobj.findAll('div',{'class':class_name}):
+        data=news.text.strip()
+        data.encode("ascii", "ignore")
+        # data.replace(""," ")
+        print(data)
+        article+=data
+    return article
 
 def get_summary():
     global res
     list_of_articles = get_tweets("CNN")
     list_of_summary = []
     for i in list_of_articles:
-        article = get_article(i)
+        article = get_article(i, "CNN")
         summary = returnSummary(article)
         list_of_summary.append(summary)
     #print(summary)

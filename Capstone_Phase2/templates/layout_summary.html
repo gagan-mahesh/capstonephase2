@@ -18,17 +18,19 @@
 	</script>
 
     <script>
-        window.send_data= function(data){
+        window.send_data= function(val){
           // data="{da:sample string}"
-          console.log(data)
+		  console.log("inside send data")
+          console.log("inside function " + val)
           $.ajax({
-                type: 'post',
+                type: 'POST',
                 url: '/emotion',
-                data: JSON.stringify(data),
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    console.log(data);
-                }
+				data: JSON.stringify("dummy string")
+                // data: JSON.stringify(val),
+                // contentType: "application/json; charset=utf-8",
+                // success: function (data) {
+                //     console.log(data);
+                // }
             });
           
           };
