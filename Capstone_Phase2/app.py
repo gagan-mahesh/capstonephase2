@@ -112,7 +112,8 @@ def summary():
 				#akash's function by passing link, username
 				jobs = add_task(link, username)
 				print("jobs = ", jobs)
-		return "Summarising....", 202
+		# return "Summarising....", 202
+		return render_template('buffer.html'), 202
 	except Exception as e:
 		return "Something went wrong, try again in a while! ", 500
 
@@ -160,9 +161,10 @@ def result():
 # #emotion detection 
 @app.route('/emotion',methods=['POST','GET'])
 def emotion_detection():
-	print("request template = ", request)
-	print("request1", request.form['temp'])
-	print("request ", request.form.get('temp'))
+	# print("request template = ", request)
+	# print("request1", request.form['temp'])
+	# print("request ", request.form.get('temp'))
+	summary = request.form['temp']
 	# summary = "migrant is body hanging out of plane on runway of casablanca is mohammed v airport . authorities believe it is most likely that the man died during take off in conakry passengers said they were shocked to find out what happened during the flight . sadly, this is not the first time a stowaway has made their way onto a plane . earlier this year the body of a suspected plane landed just three feet away from a sunbathing resident in clapham . the sunbather is in his 20s and is still waiting for it . it is believed to have fallen from the plane on the runway in morocco . one of the passengers said: i am very sad for him and his family . police have released horrifying footage shows the unidentified man was killed during take-off in london after trying to leave the"
 	emotions = getEmotion(summary)
 	different_emotions = {}
