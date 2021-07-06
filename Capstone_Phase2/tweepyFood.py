@@ -15,7 +15,10 @@ csvFile = open('tweets1.csv', 'a')
 #Use csv Writer
 csvWriter = csv.writer(csvFile)
 
-
-for tweet in tweepy.Cursor(api.search,q="Healthy Food", lang="en").items():
+c = 1
+for tweet in tweepy.Cursor(api.search,q="pizza", lang="en").items():
+    if c > 10:
+        break 
+    c += 1
     print (tweet.created_at, tweet.text)
     csvWriter.writerow([tweet.created_at, tweet.text.encode('utf-8')])
