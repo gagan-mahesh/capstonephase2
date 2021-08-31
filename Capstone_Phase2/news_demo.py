@@ -53,7 +53,7 @@ def cleanText(article):
 
 def summarize(article):
     ids =tokenizer.encode_plus((model.config.prefix + article), return_tensors="tf", max_length=512)
-    sum = model.generate(input_ids=ids['input_ids'], attention_mask=ids['attention_mask'],min_length=100)
+    sum = model.generate(input_ids=ids['input_ids'], attention_mask=ids['attention_mask'],min_length=120)
     pred = [tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=False) for g in sum]
     return ' '.join(pred)
 

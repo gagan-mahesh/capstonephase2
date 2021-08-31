@@ -14,12 +14,13 @@ from transformers import BertTokenizer,TFBertModel
 import joblib
 
 
-tokenizer = BertTokenizer.from_pretrained('./emotion_tokeniser')
-model =TFBertModel.from_pretrained('./emotion_model')
-classifier=joblib.load('./dense.pkl')
+tokenizer = BertTokenizer.from_pretrained('./emotion_tokeniser2')
+model =TFBertModel.from_pretrained('./emotion_model2')
+classifier=joblib.load('./dense2.pkl')
 
 def mapClass(cls_output):
-	labels=['anger', 'fear', 'joy', 'sadness', 'surprise']
+	# labels=['anger', 'fear', 'joy', 'sadness', 'surprise']
+	labels=['anger', 'fear', 'joy', 'sadness', 'surprise', 'admiration', 'amusement', 'approval', 'love', 'gratitude', 'annoyance']
 	zipped_list=list(zip(labels,cls_output))
 	ans=sorted(zipped_list, key=lambda x: x[1],reverse=True)
 	d={}
