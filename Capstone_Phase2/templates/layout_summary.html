@@ -25,12 +25,11 @@
           $.ajax({
                 type: 'POST',
                 url: '/emotion',
-				data: JSON.stringify("dummy string")
-                // data: JSON.stringify(val),
-                // contentType: "application/json; charset=utf-8",
-                // success: function (data) {
-                //     console.log(data);
-                // }
+                data: JSON.stringify(val),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    console.log(data);
+                }
             });
           
           };
