@@ -14,32 +14,24 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
-c = 0
-for tweet in tweepy.Cursor(api.search,q="Idli", lang="en",tweet_mode="extended").items():
-	if c>10:
-		break
-	if 'retweeted_status' in tweet._json:
-		#temp = tweet._json['retweeted_status']['full_text'].split()
-		continue
-	else:
-		temp = tweet.full_text.split()
-	#temp = tweet.full_text.split()
-	res = ""
-	for i in temp:
-		if i[0]!='@' and i[0]!='#' and "https" not in i:
-			res+=i+str(" ")
-	if len(res) > 10:
-		c+=1 
-		print(res)
-		emotions = getEmotion(res)
-		different_emotions = {}
-		all_emotions = [] 
-		for emotion in emotions:
-			if emotion not in different_emotions:
-				different_emotions['title'] = emotion
-				different_emotions['content'] = emotions[emotion]
-			all_emotions.append(different_emotions)
-			different_emotions = {}
-		print(all_emotions)
-		print("\n\n")
-	c+=1
+def get_reviews(hashtag,num_of_tweets):
+	all_reviews = []
+	counter = 0
+	for tweet in tweepy.Cursor(api.search,q=hashtag, lang="en",tweet_mode="extended").items():
+		if counter>num_of_tweets:
+			break
+		if 'retweeted_status' in tweet._json:
+			#tweet_res = tweet._json['retweeted_status']['full_text'].split()
+			continue
+		else:
+			tweet_res = tweet.full_text.split()
+		res = ""
+		for i in tweet_res:
+			if i[0]!='@' and i[0]!='#' and "https" not in i:
+				res+=i+str(" ")
+
+		if len(res) > 10:
+			counter+=1 
+			all_reviews.append(res)
+		counter+=1
+	return all_reviews

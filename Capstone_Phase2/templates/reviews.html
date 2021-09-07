@@ -1,0 +1,16 @@
+{% extends "review_template.html" %}
+{% block content %}
+	{%for review in reviews %}
+	<article class="media content-section">
+	  <div class="media-body">
+	    <p class="article-content">
+			{{review.content}}
+			<form action="/emotion" method='POST'>
+				<input type="text" name="temp" value="`{{review.content}}`" hidden />
+				<button class="btn btn-outline-info" type="submit">submit</button>
+			</form>
+		</p>
+	  </div>
+	</article>
+	{% endfor %}
+{% endblock%}
