@@ -1,12 +1,12 @@
-{% extends "layout_summary.html" %}
+{% extends "review_template.html" %}
 {% block content %}
-	{%for summary in summaries%}
+	{%for review in reviews %}
 	<article class="media content-section">
 	  <div class="media-body">
 	    <p class="article-content">
-			{{summary.content}}
+			{{review.content}}
 			<form action="/emotion" method='POST'>
-				<input type="text" name="temp" value="`{{summary.content}}`" hidden />
+				<input type="text" name="temp" value="`{{review.content}}`" hidden />
 				<button class="btn btn-outline-info" type="submit">submit</button>
 			</form>
 		</p>
