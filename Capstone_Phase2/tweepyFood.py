@@ -3,7 +3,7 @@ import csv
 import sys, time
 import json
 sys.path.insert(1, '../')
-from Capstone_Phase2.emotion import *
+from emotion import *
 
 consumer_key = 'tNR4XEQAjcNhemWhESdgJD36V'
 consumer_secret = 'bpfPt6822IBvlPTG7FoZsYvHxJCGlayFq5Y9kC5q6M4MSpXldc'

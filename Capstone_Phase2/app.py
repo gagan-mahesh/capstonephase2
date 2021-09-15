@@ -1,11 +1,11 @@
 import sys, time
 import json
-sys.path.insert(1, '../')
+# sys.path.insert(1, '../')
 from flask import Flask, render_template, redirect, url_for, jsonify, request
-from Capstone_Phase2.news_demo import *
-from Capstone_Phase2.tweepySample import getTweetsFromUser
-from Capstone_Phase2.emotion import *
-from Capstone_Phase2.tweepyFood import *
+from news_demo import *
+from tweepySample import getTweetsFromUser
+from emotion import *
+from tweepyFood import *
 from rq import Queue
 from rq.job import Job
 from worker import conn
