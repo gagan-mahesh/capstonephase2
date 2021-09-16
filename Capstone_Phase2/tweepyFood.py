@@ -29,6 +29,7 @@ def emojis_to_text(text):
 	return text
 
 def get_reviews(hashtag,num_of_tweets):
+	num_of_tweets+=2
 	all_reviews = []
 	counter = 0
 	for tweet in tweepy.Cursor(api.search,q=hashtag, lang="en",tweet_mode="extended").items():
