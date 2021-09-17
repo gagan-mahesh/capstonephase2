@@ -51,13 +51,11 @@ def get_tweets(username):
                     urllist.append(actual_url)
                 except:
                     pass 
-                    # print(url)
-        #print(urllist)
         return urllist
 
 # this function will be used for the api call in app.py for getting tweets..
 def getTweetsFromUser(username, count):
-        # count+=2 #added 2 to make the count proper
+        '''count+=2 #added 2 to make the count proper'''
         
         # Authorization to consumer key and consumer secret
         auth = tweepy.OAuthHandler(consumerKey, consumerSecret)
@@ -77,24 +75,28 @@ def getTweetsFromUser(username, count):
         flag = False
         c=0
         for tweet in tweets:
-            print("waiting....")
-            print("count of tweets extracted = ", c)
-            c += 1
-            if c > count:
-                break
-            urls = re.findall("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", tweet.full_text)
-            for url in urls:
-                try:
-                    opener = urllib.request.build_opener()
-                    request = urllib.request.Request(url)
-                    response = opener.open(request)
-                    actual_url = response.geturl()
-                    urllist.append(actual_url)
-                except:
-                    pass 
-                    # print(url)
-        #print(urllist)
+            try:
+                temp = tweet._json['entities']['urls'][0]['expanded_url'] # temp holds the expanded url, if it is not present, that means its a video and an exception will occur 
+                print("waiting....")
+                print("count of tweets extracted = ", c)
+                c += 1
+                if c > count:
+                    break
+                urls = re.findall("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", tweet.full_text)
+                for url in urls:
+                    try:
+                        opener = urllib.request.build_opener()
+                        request = urllib.request.Request(url)
+                        response = opener.open(request)
+                        actual_url = response.geturl()
+                        urllist.append(actual_url)
+                    except:
+                        pass 
+            except:
+                continue # this tweet might contain a video instead of a http link to a news article
         return urllist
 
+# if __name__ == "__main__":
+#     getTweetsFromUser("CNN", 8)
 
 
