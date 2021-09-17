@@ -57,7 +57,7 @@ def get_tweets(username):
 
 # this function will be used for the api call in app.py for getting tweets..
 def getTweetsFromUser(username, count):
-        count+=2 #added 2 to make the count proper
+        # count+=2 #added 2 to make the count proper
         
         # Authorization to consumer key and consumer secret
         auth = tweepy.OAuthHandler(consumerKey, consumerSecret)

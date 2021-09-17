@@ -16,7 +16,7 @@ import joblib
 
 tokenizer = BertTokenizer.from_pretrained('./emotion_tokeniser2')
 model =TFBertModel.from_pretrained('./emotion_model2')
-classifier=joblib.load('./dense.pkl')
+classifier=joblib.load('./dense2.pkl')
 
 def mapClass(cls_output):
 	# labels=['anger', 'fear', 'joy', 'sadness', 'surprise']
