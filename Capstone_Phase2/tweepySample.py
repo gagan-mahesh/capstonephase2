@@ -77,6 +77,7 @@ def getTweetsFromUser(username, count):
         for tweet in tweets:
             try:
                 temp = tweet._json['entities']['urls'][0]['expanded_url'] # temp holds the expanded url, if it is not present, that means its a video and an exception will occur 
+                # print(tweet._json)
                 print("waiting....")
                 print("count of tweets extracted = ", c)
                 c += 1
@@ -89,14 +90,17 @@ def getTweetsFromUser(username, count):
                         request = urllib.request.Request(url)
                         response = opener.open(request)
                         actual_url = response.geturl()
+                        if 'video' in actual_url:
+                            raise Exception("video detected")
                         urllist.append(actual_url)
                     except:
-                        pass 
+                        print("video detected")
+                        continue 
             except:
-                continue # this tweet might contain a video instead of a http link to a news article
+                continue # this tweet might contain a video or a gif or no news article urls instead of a http link to a news article
         return urllist
 
-# if __name__ == "__main__":
-#     getTweetsFromUser("CNN", 8)
+if __name__ == "__main__":
+    print(getTweetsFromUser("CNN", 4))
 
 
