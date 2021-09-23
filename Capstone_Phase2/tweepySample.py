@@ -90,8 +90,8 @@ def getTweetsFromUser(username, count):
                         request = urllib.request.Request(url)
                         response = opener.open(request)
                         actual_url = response.geturl()
-                        if 'video' in actual_url:
-                            raise Exception("video detected")
+                        if 'video' in actual_url or 'photo' in actual_url:
+                            raise Exception("video or photo detected")
                         urllist.append(actual_url)
                     except:
                         print("video detected")
@@ -100,7 +100,7 @@ def getTweetsFromUser(username, count):
                 continue # this tweet might contain a video or a gif or no news article urls instead of a http link to a news article
         return urllist
 
-if __name__ == "__main__":
-    print(getTweetsFromUser("CNN", 4))
+# if __name__ == "__main__":
+#     print(getTweetsFromUser("CNN", 4))
 
 

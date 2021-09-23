@@ -90,7 +90,7 @@ def get_article(url,news_corp):
         class_name="ssrcss-uf6wea-RichTextComponentWrapper e1xue1i84"
     elif news_corp=='CNN':
         class_name="zn-body__paragraph"
-    elif news_corp=='Deccan Herald':
+    elif news_corp=='DeccanHerald':
         class_name="field field-name-body field-type-text-with-summary field-label-hidden"
     else:
         class_name="fewcent-83940965"
