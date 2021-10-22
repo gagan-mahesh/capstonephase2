@@ -4,10 +4,11 @@ tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 import pandas as pd
 import re
 import numpy as np
-from newspaper import Article
+from newspaper import Article, article
 from tweepySample import *
 from bs4 import BeautifulSoup as soup
 import requests
+from newspaper import Article
 
 tokenizer = T5Tokenizer.from_pretrained('./Abstractive Summarisation model/summarisation_tokeniser')
 model = TFT5ForConditionalGeneration.from_pretrained('./Abstractive Summarisation model/summarisation_model')
@@ -86,23 +87,54 @@ def returnSummary(article):
 def get_article(url,news_corp):
 #     cnn_url="https://www.bbc.com/news/world-asia-india-57551285"
     class_name=None
-    if news_corp=='BBC':
-        class_name="ssrcss-uf6wea-RichTextComponentWrapper e1xue1i84"
+    flag=0
+    if news_corp=='IndianExpress':
+        article=""
+        html = requests.get(url)
+        bsobj = soup(html.content,'lxml')
+        for news in bsobj.findAll('div',{'id':'pcl-full-content'}):
+            data=news.text.strip()
+            data.encode("ascii", "ignore")
+            # data.replace(""," ")
+            # print(data)
+            article+=data
+
+        # class_name="ssrcss-uf6wea-RichTextComponentWrapper e1xue1i84"
+        print("Indian Express")
+        return article
     elif news_corp=='CNN':
         class_name="zn-body__paragraph"
+        print("CNN")
     elif news_corp=='DeccanHerald':
+        print("Deccan")
         class_name="field field-name-body field-type-text-with-summary field-label-hidden"
     else:
         class_name="fewcent-83940965"
+ 
+        
     html = requests.get(url)
     bsobj = soup(html.content,'lxml')
     article=""
     for news in bsobj.findAll('div',{'class':class_name}):
-        data=news.text.strip()
-        data.encode("ascii", "ignore")
-        # data.replace(""," ")
-        print(data)
-        article+=data
+            data=news.text.strip()
+            data.encode("ascii", "ignore")
+            # data.replace(""," ")
+            print(data)
+            article+=data
+    if article=='':
+        # # url = "https://edition.cnn.com/2021/05/10/politics/colonial-ransomware-attack-explainer/index.html" 
+        # url = "https://t.co/0qr5fgfzgE"
+        # # download and parse article
+        article1 = Article(url)
+        article1.download()
+        article1.parse()
+        
+        # # print article text
+        # print(article.text)
+        article=article1.text
+        # flag=1
+        print("default------")
+        print(article)
     return article
 
 def get_summary():

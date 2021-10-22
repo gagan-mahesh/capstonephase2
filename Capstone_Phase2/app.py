@@ -45,6 +45,8 @@ def summary_util(t):
 	article = get_article(t[0], t[1])
 	# article = get_article("https://edition.cnn.com/2021/07/06/asia/hong-kong-alleged-plot-intl-hnk/index.html?utm_source=twCNN&utm_term=link&utm_content=2021-07-06T05%3A45%3A45&utm_medium=social", t[1])
 	summ = returnSummary(article)
+	if "sunteti" in summ:
+		summ=summ[8:]
 	with open('sample.csv', mode='a+') as file_:
 		file_.write("{}".format(summ))
 		file_.write("\n")  # Next line.

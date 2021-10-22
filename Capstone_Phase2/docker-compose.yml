@@ -23,20 +23,47 @@
     
 
 
+# version: "3"
+# services:
+#   web:
+#     image: "gaganmahesh2021/capstone2:latest"
+#     # build: .
+#     volumes: 
+#       - myvolume:/myfolder
+#     ports:
+#       - 8000:8000
+#     # command: run.sh
+#     links: 
+#       - redis
+#   worker:
+#     image: "gaganmahesh2021/capstone2:latest"
+#     # build: .
+#     volumes: 
+#       - myvolume:/myfolder
+#     ports: 
+#       - 6379:6379
+#     command: python worker.py 
+#     links: 
+#       - redis 
+#   redis:
+#     image: "redis:alpine"
+# volumes: 
+#   myvolume: 
+
 version: "3"
 services:
   web:
-    image: "gaganmahesh2021/capstone2:latest"
+    build: .
     # build: .
     volumes: 
       - myvolume:/myfolder
     ports:
-      - 12000:8000
+      - 8000:8000
     # command: run.sh
     links: 
       - redis
   worker:
-    image: "gaganmahesh2021/capstone2:latest"
+    build: .
     # build: .
     volumes: 
       - myvolume:/myfolder
@@ -48,4 +75,4 @@ services:
   redis:
     image: "redis:alpine"
 volumes: 
-  myvolume: 
+  myvolume:
