@@ -1,0 +1,63 @@
+{
+	"AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+        {
+            "essential": true,
+            "image": "redis:alpine",
+            "name": "redis"
+        },
+        {
+            "essential": true,
+            "image": "gaganmahesh2021/capstone2:latest",
+            "links": [
+                "redis"
+            ],
+            "mountPoints": [
+                {
+                    "containerPath": "/myfolder",
+                    "sourceVolume": "Myvolume"
+                }
+            ],
+            "name": "web",
+            "portMappings": [
+                {
+                    "containerPort": 8000,
+                    "hostPort": 8000
+                }
+            ]
+        },
+        {
+            "command": [
+                "python",
+                "worker.py"
+            ],
+            "essential": true,
+            "image": "gaganmahesh2021/capstone2:latest",
+            "links": [
+                "redis"
+            ],
+            "mountPoints": [
+                {
+                    "containerPath": "/myfolder",
+                    "sourceVolume": "Myvolume"
+                }
+            ],
+            "name": "worker",
+            "portMappings": [
+                {
+                    "containerPort": 6379,
+                    "hostPort": 6379
+                }
+            ]
+        }
+    ],
+    "family": "",
+    "volumes": [
+        {
+            "host": {
+                "sourcePath": "myvolume"
+            },
+            "name": "Myvolume"
+        }
+    ]
+}

@@ -7,26 +7,35 @@ from sklearn import metrics
 from bs4 import BeautifulSoup
 import transformers
 from transformers import BertTokenizer, BertModel, BertConfig, AdamW
+# import tensorflow.keras
 import warnings
 warnings.filterwarnings('ignore')
 
 from transformers import BertTokenizer,TFBertModel
+# from tensorflow.keras.layers import Dense, Flatten, Input
 import joblib
 
-
-tokenizer = BertTokenizer.from_pretrained('./emotion_tokeniser2')
-model =TFBertModel.from_pretrained('./emotion_model2')
-classifier=joblib.load('./dense2.pkl')
+tokenizer = BertTokenizer.from_pretrained('./emotion_tokeniser_8')
+model =TFBertModel.from_pretrained('./emotion_model_8')
+classifier=joblib.load('./dense8.pkl')
 
 def mapClass(cls_output):
-	# labels=['anger', 'fear', 'joy', 'sadness', 'surprise']
-	labels=['anger', 'fear', 'joy', 'sadness', 'surprise', 'admiration', 'amusement', 'approval', 'love', 'gratitude', 'annoyance']
-	zipped_list=list(zip(labels,cls_output))
-	ans=sorted(zipped_list, key=lambda x: x[1],reverse=True)
-	d={}
-	for key,value in ans:
-		d[key]=value
-	return d
+  labels=['anger','disapproval','fear','joy','sadness','surprise','curiosity','admiration','amusement','approval','love','gratitude','annoyance']
+  zipped_list=list(zip(labels,cls_output))
+  ans=sorted(zipped_list, key=lambda x: x[1],reverse=True)
+  d={}
+  for key,value in ans:
+    d[key]=value
+  return d 
+# def mapClass(cls_output):
+# 	# labels=['anger', 'fear', 'joy', 'sadness', 'surprise']
+# 	labels=['anger', 'fear', 'joy', 'sadness', 'surprise', 'admiration', 'amusement', 'approval', 'love', 'gratitude', 'annoyance']
+# 	zipped_list=list(zip(labels,cls_output))
+# 	ans=sorted(zipped_list, key=lambda x: x[1],reverse=True)
+# 	d={}
+# 	for key,value in ans:
+# 		d[key]=value
+# 	return d
 
 contraction_mapping = {"ain't": "is not", "aren't": "are not","can't": "cannot", "'cause": "because", "could've": "could have", "couldn't": "could not", 
                        "didn't": "did not",  "doesn't": "does not", "don't": "do not", "hadn't": "had not", "hasn't": "has not", "haven't": "have not", 

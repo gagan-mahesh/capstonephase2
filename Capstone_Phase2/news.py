@@ -16,7 +16,7 @@ import requests
 # cnn_url="https://edition.cnn.com/2021/06/08/europe/bubble-barrier-sea-c2e-spc-intl/index.html"
 # cnn_url="https://t.co/Au1AQCGnQQ?amp=1"
 # cnn_url="https://edition.cnn.com/2021/10/22/europe/italy-vaccine-pass-fascism-intl-cmd/index.html?utm_term=image&utm_medium=social&utm_source=twCNN&utm_content=2021-10-22T09%3A20%3A04"
-cnn_url="https://indianexpress.com/article/india/pms-speeches-in-hindi-played-key-role-in-covid-control-mos-ajay-mishra-7585641/"
+cnn_url="https://indianexpress.com/article/opinion/editorials/covid-19-vaccine-optimism-100-crore-vaccines-7585702/"
 html = requests.get(cnn_url)
 bsobj = soup(html.content,'lxml')
 article=""

@@ -32,7 +32,7 @@ def get_reviews(hashtag,num_of_tweets):
     num_of_tweets+=1
     all_reviews = []
     counter = 0
-    for tweet in tweepy.Cursor(api.search,q=hashtag, lang="en",tweet_mode="extended").items():
+    for tweet in tweepy.Cursor(api.search_tweets,q=hashtag, lang="en",tweet_mode="extended").items():
         if counter>num_of_tweets:
             break
         if 'retweeted_status' in tweet._json:
